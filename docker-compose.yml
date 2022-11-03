@@ -1,8 +1,11 @@
 services:
-  apache:
+  asir_apache:
     container_name: asir_apache
     image: php:7.2-apache
     ports:
       - 8080:80
     volumes:
       - ./html:/var/www/html
+      - confApache:/etc/apache2
+volumes:
+  confApache:
