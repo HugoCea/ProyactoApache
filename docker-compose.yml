@@ -4,8 +4,19 @@ services:
     image: php:7.2-apache
     ports:
       - 8080:80
+      - 8000:8000
     volumes:
       - ./html:/var/www/html
-      - confApache:/etc/apache2
-volumes:
-  confApache:
+      - ./confApache:/etc/apache2
+  asir_bind9_practica:
+    container_name: asir_bind9_practica
+    image: internetsystemsconsortium/bind9:9.16
+    ports:
+      - 5300:53/udp
+      - 5300:53/tcp
+    networks:
+      bind9_subnetasir:
+        ipv4_address: 10.28.0.254
+    volumes:
+      - /home/hugo/Documentos/SRI/practica1/conf:/etc/bind
+      - /home/hugo/Documentos/SRI/practica1/zonas:/var/lib/bind
