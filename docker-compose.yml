@@ -1,6 +1,6 @@
 version: "3.9"
 services: 
-  asir_apache:
+  asir_apache: #contenedor apche
     container_name: asir_apache
     image: php:7.2-apache
     ports:
@@ -8,11 +8,11 @@ services:
       - 8000:8000
     networks:
       bind9_subnetasir_apache:
-        ipv4_address: 10.26.0.25
+        ipv4_address: 10.26.0.25 #ip fija del apache
     volumes:
       - ./html:/var/www/html
       - ./confApache:/etc/apache2
-  asir_bind9_apache:
+  asir_bind9_apache: #contenedor dns
     container_name: asir_bind9_apache
     image: internetsystemsconsortium/bind9:9.16
     ports:
@@ -20,11 +20,11 @@ services:
       - 5401:53/tcp
     networks:
       bind9_subnetasir_apache:
-        ipv4_address: 10.26.0.253
+        ipv4_address: 10.26.0.253 #ip fija del dns
     volumes:
       - /home/asir2a/Documentos/SRI/ProyectoApache/confDNS/conf:/etc/bind
       - /home/asir2a/Documentos/SRI/ProyectoApache/confDNS/zonas:/var/lib/bind
-  asir_cliente_apache:
+  asir_cliente_apache: # contenedor cliente
     container_name: asir_cliente_apache
     image: alpine
     networks:
@@ -33,6 +33,6 @@ services:
     tty: true
     dns:
       - 10.26.0.253
-networks:
+networks: #asignación de la subnet
   bind9_subnetasir_apache:
     external: true

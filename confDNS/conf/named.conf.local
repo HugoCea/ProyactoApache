@@ -6,3 +6,4 @@ zone "fabulas.com." {
                 any;
         };
 };
+

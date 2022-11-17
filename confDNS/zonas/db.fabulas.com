@@ -10,3 +10,4 @@ $TTL    36000
 ns              IN      A       10.26.0.253
 maravillosas    IN      A       10.26.0.25
 oscuras         IN      CNAME   maravillosas
+

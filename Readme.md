@@ -6,6 +6,11 @@ El _docker-compose_ es el que levanta el servicio, mientras que los otros 2 arch
 
 ## Configuración del _docker-compose_
 
+Antes de nada creamos la subnet con:
+~~~
+docker network create  --subnet 10.26.0.0/16 --gateway 10.26.0.1 bind9_subnetasir_apache
+~~~
+
 Aquí crearemos el servicio _asir_apache_, a este le asignaremos:
 
 1. Un nombre
@@ -215,12 +220,12 @@ Ahora con hacer un stop y un start debería de funcionar
 
 Hacemos un wget a **maravillosas.fabulas.com** y este nos devuelve el _index.html_
 
-![wget marvillosas](https://github.com/HugoCea/ProyactoApache/blob/master/imagenes/imgmaravillosas.png)
+![wget marvillosas](https://github.com/HugoCea/ProyactoApache/blob/master/imagenes/imgMaravillosas.png)
 
 Y cuando lo hacemos a **oscuras.fabulas.com:8000/prueba.php** debemos especificar el puerto y el archivo en este caso ya que no es el default.
 Y este nos devuelde la info de PHP
 
-![wget oscuras](https://github.com/HugoCea/ProyactoApache/blob/master/imagenes/imgoscuras.png)
+![wget oscuras](https://github.com/HugoCea/ProyactoApache/blob/master/imagenes/imgOscuras.png)
 
 
 
