@@ -1,0 +1,8 @@
+zone "fabulas.com." {
+        type master;
+        file "/var/lib/bind/db.fabulas.com";
+        notify explicit;
+        allow-query {
+                any;
+        };
+};
