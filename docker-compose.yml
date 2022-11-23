@@ -1,14 +1,15 @@
 version: "3.9"
 services: 
-  asir_apache: #contenedor apche
+  asir_apache:
     container_name: asir_apache
     image: php:7.2-apache
     ports:
       - 8080:80
       - 8000:8000
+      - 443:443
     networks:
       bind9_subnetasir_apache:
-        ipv4_address: 10.26.0.25 #ip fija del apache
+        ipv4_address: 10.26.0.25
     volumes:
       - ./html:/var/www/html
       - ./confApache:/etc/apache2
@@ -33,6 +34,20 @@ services:
     tty: true
     dns:
       - 10.26.0.253
+  wireshark:
+    image: lscr.io/linuxserver/wireshark:latest
+    container_name: wireshark
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - PUID=1026
+      - PGID=100
+      - TZ=Europe/London
+    volumes:
+      - /home/asir2a/Documentos/SRI/ProyectoApache/confWire:/config
+    ports:
+      - 3000:3000
+    restart: unless-stopped
 networks: #asignación de la subnet
   bind9_subnetasir_apache:
     external: true
