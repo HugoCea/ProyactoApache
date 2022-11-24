@@ -227,15 +227,92 @@ Y este nos devuelde la info de PHP
 
 ![wget oscuras](https://github.com/HugoCea/ProyactoApache/blob/master/imagenes/imgOscuras.png)
 
+# SSL
+
+Para montar un sitio con SSL lo primero que haremos poner el puerto 443 en nuestro apache en el _docker-compose.yml_, ya que este el puerto del SSL
+~~~
+- 443:443
+~~~
+
+Lo siguiente que haremos será meter en la carpeta _html_, que es donde tenemos los sitios, un sitio nuevo, al que llamamos **SitioSSL** y metemos en el un _index.html_ donde ponemos por ejemplo:
+
+> Sitio SSL
+
+El siguiente paso será crear una carpeta en la configuración del Apache, para los certificados, la llamaremos **certs**.
+Ahora iremos a la shell de nuestro Apache, nos situamos en esa carpeta y escribimos el siguiente comando:
+
+~~~
+a2enmod ssl
+~~~
+
+Esto nos debería de dar errores de algunos ficheros que debemos borrar hasta que ya no de errores. Y podremos el siguiente comando 
+
+~~~
+openssl req -new -newkey rsa:4096 -x509 -sha256 -days 365 -nodes -out apache-certificate.crt -keyout apache.key
+~~~
+
+Nos pedirá completar algunos campos, como el país, la ciudad, etc...
+
+![comandoSSL](https://github.com/HugoCea/ProyactoApache/blob/master/imagenes/comandoSSL.png)
+
+Al acabar nos pedirá un reinicio del servicio, para aplicar los cambios.
+
+Lo siguiente que haremos será ir a _sites-available_ y entrar al fichero:
+> default-ssl.conf
+
+ Allí cambaremos la ruta del _DocumentRoot_ hacía el sitio SSl creado anteriormente.
+
+> DocumentRoot /var/www/html/SitioSSL
+
+Y también el fichero del certificado y el de la llave, los cuales se encuantran en la carpeta **certs** que creamos antes, ya que allí ejecutamos el comando anterior.
+
+>SSLCertificateFile	/etc/apache2/certs/apache-certificate.crt
+
+>SSLCertificateKeyFile /etc/apache2/certs/apache.key
+
+Para aplicar estos cambios y que pasen a _sites-enabled_ iremos a la shell del Apache y pondremos
+
+> a2ensite default-ssl
+
+# Prueba SSL
+ Para la comprobación nos vamos al navegador y escribimos:
+ 
+ >https://localhost
+
+Esto nos llevara al index.html que metimos en este sitio
+
+![imgSitioSSL](https://github.com/HugoCea/ProyactoApache/blob/master/imagenes/imgSSL.png)
 
 
+# WireShark
 
+Para configurar y tener WireShark funcionando, crearemos la carpeta **confWire** para asignarle la configuración e iremos al _docker-compose.yml_ y escribiremos lo siguiente configuración de internet en **_services_**:
 
+~~~
+  wireshark:
+    image: lscr.io/linuxserver/wireshark:latest
+    container_name: wireshark
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - PUID=1026
+      - PGID=100
+      - TZ=Europe/London
+    volumes:
+      - /home/asir2a/Documentos/SRI/ProyectoApache/confWire:/config
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+networks: #asignación de la subnet
+  bind9_subnetasir_apache:
+    external: true
+~~~
 
+> La líne de _volumes_ debe estar apuntado haci la carpeta _confWire_que creamos
 
+Ahora iremos al navegador, al puerto 3000 que es el que configuramos y allí tendremos el WireShark
 
-
-
+![imgWireShark](https://github.com/HugoCea/ProyactoApache/blob/master/imagenes/imgWire.png)
 
 
 
